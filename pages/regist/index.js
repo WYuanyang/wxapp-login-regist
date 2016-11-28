@@ -12,7 +12,7 @@ Page({
     smsCodeDisabled:false,
     inputUserName: '',
     inputPassword: '',
-    
+    phoneNum: ''
   },
   onLoad:function(options){
     // 页面初始化 options为页面跳转所带来的参数
@@ -39,7 +39,7 @@ Page({
     this.mysubmit(param);
   },
   mysubmit:function (param){
-    var flag = this.checkUserName(param)&&this.checkPassword(param)&&this.checkSmsCode(param)
+    var flag = this.checkUserName(param.username)&&this.checkPassword(param)&&this.checkSmsCode(param)
     var that = this;
     if(flag){
         this.setregistData1();
@@ -53,6 +53,12 @@ Page({
           that.redirectTo(param);
         },2000);
     } 
+  },
+  getPhoneNum:function(e){
+   var value  = e.detail.value;
+   this.setData({
+    phoneNum: value     
+   });
   },
   setregistData1:function(){
     this.setData({
@@ -72,7 +78,7 @@ Page({
   },
   checkUserName:function(param){ 
     var phone = util.regexConfig().phone;
-    var inputUserName = param.username.trim();
+    var inputUserName = param.trim();
     if(phone.test(inputUserName)){
       return true;
     }else{
@@ -106,9 +112,11 @@ Page({
     }
   },
   getSmsCode:function(){
+    var phoneNum = this.data.phoneNum;
     var that = this;
     var count = 60;
-    var si = setInterval(function(){
+    if(this.checkUserName(phoneNum)){
+      var si = setInterval(function(){
       if(count > 0){
         count--;
         that.setData({
@@ -122,10 +130,11 @@ Page({
           getSmsCodeBtnColor:"#ff9900",
           smsCodeDisabled: false
         });
-        count = 60;
-        clearInterval(si);
-      }
-    },1000);
+          count = 60;
+          clearInterval(si);
+        }
+      },1000);
+    }
     
   },
   checkSmsCode:function(param){

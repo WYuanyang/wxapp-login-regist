@@ -4,7 +4,7 @@
     </view>
     <form bindsubmit="formSubmit">
         <view class="input-area">
-          <input id="username" name="username" maxlength='11' type="text" placeholder="手机号" />
+          <input id="username" name="username" maxlength='11' type="text" placeholder="手机号" bindchange="getPhoneNum"/>
           <view class="smsCode">
             <input id="smsCode" name="smsCode" maxlength='6' type="text" placeholder="验证码" />
             <button bindtap = "getSmsCode" disabled="{{smsCodeDisabled}}" style="background-color:{{getSmsCodeBtnColor}}"   class="getSmsCodeBtn">{{getSmsCodeBtnTxt}}</button>
